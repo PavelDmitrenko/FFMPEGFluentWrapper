@@ -82,6 +82,7 @@ namespace DeloAudioRecorder
 
             _ffmpeg
                 .FFMPEGPath(_ffmpegPath)
+                .EncodingFormat(EncodingFormat.MP3)
                 .Bitrate(128)
                 .Sampling(44100)
                 .Channels(Channels.Mono)
