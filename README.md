@@ -2,7 +2,8 @@
 ### A fluent wrapper to FFMPEG
 
 * Enumerate DirectShow capture devices;
-* Capture audio from DirectShow device;
+* Capture stream from DirectShow device;
+* .NET Standard 2.1 & .NET FrameWork 4.0 DLL;
 
 ## Dependencies
 + FFMPEG executable file
@@ -22,13 +23,13 @@ ffmpeg.FFMPEGPath(<path_to_ffmpeg_executable>)
         .Sampling(44100)
         .Channels(Channels.Mono)
         .CaptureDevice(<name_of_directshow_device>)
-        .Destination(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3"))
+        .Destination(<path_to_destination>)
         .OnEvent(data =>
             {
                 /// MaxLevel: RMS max.level
                 /// CurrentLevel: RMS current level
                 /// Bitrate: Current bitrate in kb/s
-                /// Size: File Size in bytes
+                /// Size: File size in bytes
                 /// Duration: Recording duration (TimeSpan)
             })
         .CaptureStart(); // Start capture using selected DirectShow capture device
