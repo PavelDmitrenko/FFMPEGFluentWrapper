@@ -177,7 +177,6 @@ namespace FFMPEGWrapper
                         availableDevices.Add(item);
                     }
                 }
-
             }
 
             return availableDevices;
@@ -188,7 +187,7 @@ namespace FFMPEGWrapper
         public void CaptureStart()
         {
             if (string.IsNullOrEmpty(_destination))
-                throw new Exception("No destination filename specified");
+                throw new Exception("No destination specified");
 
             _TerminateAllFFMPEGInstances();
 
@@ -198,9 +197,6 @@ namespace FFMPEGWrapper
                 CancellationToken token = (CancellationToken)task;
                 if (token.IsCancellationRequested)
                     return;
-
-                if (string.IsNullOrEmpty(_destination))
-                    _destination = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3");
 
                 DateTime eventPublished = DateTime.Now;
 

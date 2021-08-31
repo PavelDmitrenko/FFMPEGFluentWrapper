@@ -106,7 +106,7 @@ namespace DeloAudioRecorder
         #region _GetFFMpegPath
         private static string _GetFFMpegPath()
         {
-            string ffmpegPath = Path.Combine(Application.StartupPath, "ffmpeg", "ffmpeg32.exe");
+            string ffmpegPath = Path.Combine(Application.StartupPath, "ffmpeg.exe");
             if (!File.Exists(ffmpegPath))
             {
                 MessageBox.Show("Cant find ffmpeg file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
