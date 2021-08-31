@@ -10,7 +10,7 @@
 ```csharp
 // Enumerate DirectShow capture devices
 FFMPEG ffmpeg = new FFMPEG();
-List<AudioDevice> captureDevices = ffmpeg.FFMPEGPath(_ffmpegPath)
+List<AudioDevice> captureDevices = ffmpeg.FFMPEGPath(<path_to_ffmpeg_executable>)
                                     .EnumerateCaptureDevices();
  
 // Capture
@@ -23,14 +23,14 @@ ffmpeg.FFMPEGPath(<path_to_ffmpeg_executable>)
         .Destination(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3"))
         .OnEvent(data =>
             {
-                /// MaxLevel: RMS max.level measured in dBFS
-                /// CurrentLevel: RMS current level measured in dBFS
+                /// MaxLevel: RMS max.level
+                /// CurrentLevel: RMS current level
                 /// Bitrate: Current bitrate in kb/s
                 /// Size: File Size in bytes
-                /// Duration: Recording duration
+                /// Duration: Recording duration (TimeSpan)
             })
-            .CaptureStart(); // Start capture using selected DirectShow capture device
+        .CaptureStart(); // Start capture using selected DirectShow capture device
 
 // Stop capture
 ffmpeg.CaptureStop();
-}```
+```
