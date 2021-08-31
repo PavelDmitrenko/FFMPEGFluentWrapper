@@ -4,7 +4,7 @@
 * Capture audio from DirectShow device;
 
 ## Dependencies
-+ FFMPEG executabale file
++ FFMPEG executable file
 
 ## Usage
 ```csharp
