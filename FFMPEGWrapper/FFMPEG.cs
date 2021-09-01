@@ -250,7 +250,6 @@ namespace FFMPEGWrapper
                                     if (currentDBFS < dbfsMax)
                                     {
                                         dbfsMax = currentDBFS;
-                                        ffmpegEvent.MaxLevel = dbfsMax;
                                     }
 
                                     if (currentDBFS > silenceLevel)
@@ -259,7 +258,7 @@ namespace FFMPEGWrapper
                                     decimal level = silenceLevel - currentDBFS;
                                     decimal levelProc = Math.Round(level * 100 / dbfsMax, 4);
 
-                                    ffmpegEvent.CurrentLevel = levelProc > 100 ? 100 : levelProc;
+                                    ffmpegEvent.CurrentAudioLevel = levelProc > 100 ? 100 : levelProc;
 
                                 }
                             }

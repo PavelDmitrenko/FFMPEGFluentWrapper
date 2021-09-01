@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFMPEGWrapperTestFW4.0", "FFMPEGWrapperTests\FFMPEGWrapperTestFW4.0.csproj", "{ADC73F9D-89D9-4940-9B72-2920EAA513A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFMPEGWrapper", "FFMPEGWrapper\FFMPEGWrapper.csproj", "{5D109740-FF6B-49CF-8A0A-8A71C94770B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFMPEGWrapper", "FFMPEGWrapper\FFMPEGWrapper.csproj", "{5D109740-FF6B-49CF-8A0A-8A71C94770B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EBE8607E-151A-469B-B9FC-DE064E82D0F7}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

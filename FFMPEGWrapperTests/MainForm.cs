@@ -93,7 +93,7 @@ namespace DeloAudioRecorder
                     if (!IsDisposed)
                         Invoke(new Action<FFMPEGEvent>(eventData =>
                         {
-                            m_AudioLevelPrg.Value = (int)(data.CurrentLevel * 1000);
+                            m_AudioLevelPrg.Value = (int)(data.CurrentAudioLevel * 1000);
                             m_bitrateLab.Text = $"Duration: {eventData.Duration:g}; Size: {eventData.Size / 1024} KB; Bitrate: {eventData.Bitrate}kb/s";
                         }), data);
 

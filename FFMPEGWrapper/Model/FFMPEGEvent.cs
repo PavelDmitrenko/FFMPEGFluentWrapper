@@ -4,11 +4,9 @@ namespace FFMPEGWrapper
 {
     public class FFMPEGEvent
     {
-        /// <summary> RMS max.level measured in dBFS </summary>
-        public decimal MaxLevel { get; set; }
-        
-        /// <summary> RMS current level measured in dBFS </summary>
-        public decimal CurrentLevel { get; set; }
+
+        /// <summary> Current audio level (as a percentage of the maximum recorded) </summary>
+        public decimal CurrentAudioLevel { get; set; }
         
         /// <summary> Current bitrate in kb/s </summary>
         public decimal Bitrate { get; set; }
