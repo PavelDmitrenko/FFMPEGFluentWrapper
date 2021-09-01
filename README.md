@@ -28,7 +28,7 @@ ffmpeg.FFMPEGPath(<path_to_ffmpeg_executable>)
         .Destination(<path_to_destination>)
         .OnEvent(data =>
             {
-                /// CurrentLevel: Current audio level (as a percentage of the maximum recorded)
+                /// CurrentLevel: Current audio level (as a percentage of the maximum recorded in the current session)
                 /// Bitrate: Current bitrate in kb/s
                 /// Size: File size in bytes
                 /// Duration: Recording duration (TimeSpan)
