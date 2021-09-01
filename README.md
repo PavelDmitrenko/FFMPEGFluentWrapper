@@ -8,7 +8,9 @@
 ## Dependencies
 + FFMPEG executable file
 
+
 ## Usage
+![Screenshot](FFMPEGWrapperTests/TestScreenshot.png) 
 ```csharp
 // Enumerate DirectShow capture devices
 FFMPEG ffmpeg = new FFMPEG();
