@@ -14,6 +14,7 @@ namespace DeloAudioRecorder
         private AudioDevice _selectedRecordingDevice;
         private FFMPEG _ffmpeg;
         private string _ffmpegPath;
+        private string _recordingDestination;
 
         #region ctor
         public MainForm()
@@ -62,7 +63,6 @@ namespace DeloAudioRecorder
             if (m_recordingDevicesList.SelectedItem != null)
                 m_startRecButton.Enabled = true;
 
-            m_openFolderButton.Enabled = !string.IsNullOrEmpty(_ffmpeg._destination);
         }
 
         #region m_startRecButton_Click
@@ -80,6 +80,8 @@ namespace DeloAudioRecorder
             m_AudioLevelPrg.Minimum = 0;
             m_AudioLevelPrg.Maximum = 100000;
 
+            _recordingDestination = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3");
+
             _ffmpeg
                 .FFMPEGPath(_ffmpegPath)
                 .EncodingFormat(EncodingFormat.MP3)
@@ -87,7 +89,7 @@ namespace DeloAudioRecorder
                 .Sampling(44100)
                 .Channels(Channels.Mono)
                 .CaptureDevice(_selectedRecordingDevice.Name)
-                .Destination(Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3"))
+                .Destination(_recordingDestination)
                 .OnEvent(data =>
                 {
                     if (!IsDisposed)
@@ -100,7 +102,6 @@ namespace DeloAudioRecorder
                 })
                 .CaptureStart();
 
-            _ffmpeg._destination = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.mp3");
         }
         #endregion
 
@@ -136,12 +137,12 @@ namespace DeloAudioRecorder
         #region m_openFolderButton_Click
         private void m_openFolderButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(_ffmpeg._destination))
+            if (!string.IsNullOrEmpty(_recordingDestination))
             {
-                string dir = Path.GetDirectoryName(_ffmpeg._destination);
+                string dir = Path.GetDirectoryName(_recordingDestination);
                 if (Directory.Exists(dir))
                 {
-                    Process.Start("explorer.exe", Path.GetDirectoryName(_ffmpeg._destination));
+                    Process.Start("explorer.exe", Path.GetDirectoryName(_recordingDestination));
                     return;
                 }
             }

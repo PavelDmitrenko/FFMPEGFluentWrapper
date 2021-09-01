@@ -15,7 +15,7 @@ namespace FFMPEGWrapper
         private int _sampling = 44100;
         private Channels _channels = FFMPEGWrapper.Channels.Stereo;
         private EncodingFormat _encodingFormat = FFMPEGWrapper.EncodingFormat.MP3;
-        public string _destination;
+        private string _destination;
         private string _device;
         private TimeSpan _eventReportInterval = TimeSpan.FromMilliseconds(500);
         private string _path;
@@ -105,7 +105,8 @@ namespace FFMPEGWrapper
             _destination = destination;
             return this;
         }
-        
+
+
         public FFMPEG EventReportInterval(TimeSpan eventReportInterval)
         {
             _eventReportInterval = eventReportInterval;
@@ -212,12 +213,12 @@ namespace FFMPEGWrapper
                 decimal silenceLevel = 0;
 
                 string encoder;
-                string audioOnly;
+                bool audioOnly = false;
                 switch (_encodingFormat)
                 {
                     case FFMPEGWrapper.EncodingFormat.MP3:
                         encoder = "libmp3lame";
-                        audioOnly = "-vn";
+                        audioOnly = true;
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -225,7 +226,7 @@ namespace FFMPEGWrapper
 
                 string cmd = $"-y -f dshow -i audio=\"{_device}\" " +
                              $"-af astats=metadata=1:reset=1,ametadata=print:key=lavfi.astats.Overall.RMS_level " +
-                             $"{audioOnly} -ar {_sampling} -ac {(int)_channels} -b:a {_bitrate}k -c:a {encoder} {_destination}";
+                             $"{(audioOnly ? "-vn" : null)} -ar {_sampling} -ac {(int)_channels} -b:a {_bitrate}k -c:a {encoder} {_destination}";
 
                 _StartFFMpeg(cmd,
                     false,
