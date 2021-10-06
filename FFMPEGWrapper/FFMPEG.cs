@@ -24,7 +24,7 @@ namespace FFMPEGWrapper
         private readonly Regex _ffmpegRegexLevels = new Regex(@"\[Parsed_ametadata[\S\ ]*\] lavfi\.astats\.Overall\.RMS_level=(?<db1>-?\d*\.?\d*)", RegexOptions.Compiled);
         private readonly Regex _ffmpegRegexTime = new Regex(@"size=\s*(?<size>\d*)(?<size_unit>kB) time=(?<time>\d\d:\d\d:\d\d\.?\d?\d?) bitrate=\s*(?<bitrate>\d*\.?\d*?)kbits\/s", RegexOptions.Compiled);
         private Process _process;
-        
+
         public FFMPEG()
         {
             AppDomain root = AppDomain.CurrentDomain;
@@ -83,7 +83,7 @@ namespace FFMPEGWrapper
             return this;
         }
 
-        public FFMPEG Sampling(int  sampling)
+        public FFMPEG Sampling(int sampling)
         {
             _sampling = sampling;
             return this;
@@ -354,6 +354,47 @@ namespace FFMPEGWrapper
         private void _DomainUnload(object sender, EventArgs e)
         {
             _TerminateAllFFMPEGInstances();
+        }
+        #endregion
+
+        #region ConcatFiles
+        public void ConcatFiles(string outputFile, params string[] files)
+        {
+            string filesJoined = string.Join("|", files);
+            string cmd = $"-i \"concat:{filesJoined}\" -acodec copy -vcodec copy \"{outputFile}\"";
+
+            _StartFFMpeg(cmd,
+                true,
+                output =>
+                {
+                    if (string.IsNullOrEmpty(output))
+                        return;
+                });
+        }
+        #endregion
+
+        #region GetDuration
+        public int GetDuration(string fileName)
+        {
+            string cmd = $"-hide_banner -i {fileName} -f null";
+            int sec = 0;
+            _StartFFMpeg(cmd,
+                true,
+                output =>
+                {
+                    if (string.IsNullOrEmpty(output))
+                        return;
+
+                    if (output.TrimStart().StartsWith("Duration"))
+                    {
+                        int iStart = output.IndexOf(":");
+                        int iEnd = output.IndexOf(",");
+                        string outputStr = output.TrimStart().Substring(iStart, iEnd - iStart - 2);
+                        TimeSpan ts = TimeSpan.Parse(outputStr);
+                        sec = ts.Seconds;
+                    }
+                });
+            return sec;
         }
         #endregion
 
