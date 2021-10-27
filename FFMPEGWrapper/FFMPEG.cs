@@ -42,11 +42,13 @@ namespace FFMPEGWrapper
                     UseShellExecute = false,
                     FileName = _path,
                     WindowStyle = ProcessWindowStyle.Hidden,
-                    Arguments = arguments,
+                    Arguments = $"-hide_banner {arguments}",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
-                    RedirectStandardInput = true
+                    RedirectStandardInput = true,
+                    StandardErrorEncoding = new UTF8Encoding(),
+                    StandardOutputEncoding = new UTF8Encoding()
                 }
             };
 
