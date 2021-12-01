@@ -393,7 +393,7 @@ namespace FFMPEGWrapper
                         int iEnd = output.IndexOf(",");
                         string outputStr = output.TrimStart().Substring(iStart, iEnd - iStart - 2);
                         TimeSpan ts = TimeSpan.Parse(outputStr);
-                        sec = ts.Seconds;
+                        sec = (int) ts.TotalSeconds;
                     }
                 });
             return sec;
