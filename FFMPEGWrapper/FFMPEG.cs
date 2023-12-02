@@ -24,8 +24,9 @@ namespace FFMPEGWrapper
         private readonly Regex _ffmpegRegexLevels = new Regex(@"\[Parsed_ametadata[\S\ ]*\] lavfi\.astats\.Overall\.RMS_level=(?<db1>-?\d*\.?\d*)", RegexOptions.Compiled);
         private readonly Regex _ffmpegRegexTime = new Regex(@"size=\s*(?<size>\d*)(?<size_unit>kB) time=(?<time>\d\d:\d\d:\d\d\.?\d?\d?) bitrate=\s*(?<bitrate>\d*\.?\d*?)kbits\/s", RegexOptions.Compiled);
         private Process _process;
+        private string _workingDirectrory;
 
-        public FFMPEG()
+		public FFMPEG()
         {
             AppDomain root = AppDomain.CurrentDomain;
             root.ProcessExit += _DomainUnload;
@@ -52,7 +53,10 @@ namespace FFMPEGWrapper
                 }
             };
 
-            _process.OutputDataReceived += (sender, e) =>
+            if (!string.IsNullOrEmpty(_workingDirectrory))
+	            _process.StartInfo.WorkingDirectory = _workingDirectrory;
+
+			_process.OutputDataReceived += (sender, e) =>
             {
                 onData(e.Data);
                 Debug.WriteLine(e.Data);
@@ -108,8 +112,14 @@ namespace FFMPEGWrapper
             return this;
         }
 
+        public FFMPEG WorkingDirectrory(string workingDirectrory)
+        {
+	        _workingDirectrory = workingDirectrory;
+	        return this;
+        }
 
-        public FFMPEG EventReportInterval(TimeSpan eventReportInterval)
+
+		public FFMPEG EventReportInterval(TimeSpan eventReportInterval)
         {
             _eventReportInterval = eventReportInterval;
             return this;
@@ -373,10 +383,27 @@ namespace FFMPEGWrapper
                         return;
                 });
         }
-        #endregion
 
-        #region GetDuration
-        public int GetDuration(string fileName)
+        public string ConcatFilesMP3(string outputFile, params string[] files)
+        {
+	        string filesJoined = string.Join("|", files);
+	        string cmd = $"-i \"concat:{filesJoined}\" -acodec libmp3lame -vn -ar 44100 -ac 2 -b:a 128k  \"{outputFile}\"";
+            StringBuilder sb = new StringBuilder();
+
+	        _StartFFMpeg(cmd,
+		        true,
+		        output =>
+		        {
+			        if (!string.IsNullOrEmpty(output))
+				        sb.AppendLine(output);
+		        });
+
+	        return sb.ToString();
+        }
+		#endregion
+
+		#region GetDuration
+		public int GetDuration(string fileName)
         {
             string cmd = $"-hide_banner -i {fileName} -f null";
             int sec = 0;
